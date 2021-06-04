@@ -9,8 +9,6 @@ use JSON;
 use URI;
 use Data::Dumper;
 
-
-
 has firebase => (
     is          => 'ro',
     required    => 1,
@@ -47,10 +45,6 @@ has agent => (
     default     => sub { HTTP::Thin->new() },
 );
 
-
-
-
-
 sub create_uri {
     my ($self, $path, $metadata) = @_;
     
@@ -68,11 +62,6 @@ sub create_uri {
     
     return $uri;
 }
-
-
-
-
-
 
 sub upload {
     my ($self, $from_path, $to_path, $metadata) = @_;
@@ -92,9 +81,6 @@ sub upload {
     
     return $self->process_request( $request );
 }
-
-
-
 
     
     
@@ -140,12 +126,6 @@ sub process_response {
     
     
     
-
-
-
-
-
-
 
 sub get {
     my ($self, $path, $param_hash) = @_;
@@ -198,8 +178,6 @@ sub post {
     return $self->process_request( $request );
 }
 
-
-
 =head1 NAME
 
 Firebase - An interface to firebase.com.
@@ -221,7 +199,6 @@ This is a light-weight wrapper around the Firebase REST API. Firebase is a real-
 More info at L<https://www.firebase.com/docs/rest-api-quickstart.html>.
 
 =head1 METHODS
-
 
 =head2 new
 
@@ -247,7 +224,6 @@ A user agent. An L<HTTP::Thin> object will be generated for you automatically if
 
 =back
 
-
 =head2 get
 
 Fetch some data from firebase.
@@ -259,7 +235,6 @@ Fetch some data from firebase.
 The path to the info you want to fetch.
 
 =back
-
 
 =head2 put
 
@@ -295,7 +270,6 @@ A hash reference of parameters to be updated at this location.
 
 =back
 
-
 =head2 post
 
 Adds data to an existing location, creating a hash of objects below the path.
@@ -314,7 +288,6 @@ B<Warning:> Firebase doesn't work with arrays, so you can nest scalars and hashe
 
 =back
 
-
 =head2 delete
 
 Delete some data from a firebase.
@@ -327,14 +300,9 @@ The path where the info is that you want deleted.
 
 =back
 
-
-
 =head2 debug
 
 If C<debug> has been set to a true value in C<Firebase::Auth>, this will return the debug message returned with the previous response.
-
-
-
 
 =head2 create_uri
 
@@ -351,7 +319,6 @@ The path to the data.
 Any parameters you need to pass for any reason.
 
 =back
-
 
 =head2 process_request
 
@@ -377,7 +344,6 @@ An L<HTTP::Response> object.
 
 =back
 
-
 =head1 AUTHOR
 
 =over
@@ -392,8 +358,6 @@ JT Smith, C<< <jt at plainblack.com> >>
 
 =back
 
-
-
 =head1 SUPPORT
 
 =over
@@ -407,8 +371,6 @@ L<https://github.com/rizen/Firebase>
 L<https://github.com/rizen/Firebase/issues>
 
 =back
-
-
 
 =head1 LICENSE AND COPYRIGHT
 

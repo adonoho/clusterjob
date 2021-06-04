@@ -9,8 +9,6 @@ use JSON;
 use URI;
 use Data::Dumper;
 
-
-
 has firebase => (
     is          => 'ro',
     required    => 1,
@@ -83,7 +81,6 @@ sub put {
     my $uri = $self->create_uri($path);
 	#print $uri . "\n";
     my $request = POST($uri->as_string, Content_Type => 'form-data', Content => to_json($params));
-
 
     $request->method('PUT'); # because HTTP::Request::Common treats PUT as GET rather than POST
     return $self->process_request( $request );
@@ -166,7 +163,6 @@ More info at L<https://www.firebase.com/docs/rest-api-quickstart.html>.
 
 =head1 METHODS
 
-
 =head2 new
 
 Constructor
@@ -191,7 +187,6 @@ A user agent. An L<HTTP::Thin> object will be generated for you automatically if
 
 =back
 
-
 =head2 get
 
 Fetch some data from firebase.
@@ -203,7 +198,6 @@ Fetch some data from firebase.
 The path to the info you want to fetch.
 
 =back
-
 
 =head2 put
 
@@ -239,7 +233,6 @@ A hash reference of parameters to be updated at this location.
 
 =back
 
-
 =head2 post
 
 Adds data to an existing location, creating a hash of objects below the path.
@@ -258,7 +251,6 @@ B<Warning:> Firebase doesn't work with arrays, so you can nest scalars and hashe
 
 =back
 
-
 =head2 delete
 
 Delete some data from a firebase.
@@ -271,14 +263,9 @@ The path where the info is that you want deleted.
 
 =back
 
-
-
 =head2 debug
 
 If C<debug> has been set to a true value in C<Firebase::Auth>, this will return the debug message returned with the previous response.
-
-
-
 
 =head2 create_uri
 
@@ -295,7 +282,6 @@ The path to the data.
 Any parameters you need to pass for any reason.
 
 =back
-
 
 =head2 process_request
 
@@ -321,7 +307,6 @@ An L<HTTP::Response> object.
 
 =back
 
-
 =head1 AUTHOR
 
 =over
@@ -336,8 +321,6 @@ JT Smith, C<< <jt at plainblack.com> >>
 
 =back
 
-
-
 =head1 SUPPORT
 
 =over
@@ -351,8 +334,6 @@ L<https://github.com/rizen/Firebase>
 L<https://github.com/rizen/Firebase/issues>
 
 =back
-
-
 
 =head1 LICENSE AND COPYRIGHT
 

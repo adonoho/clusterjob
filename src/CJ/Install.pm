@@ -9,8 +9,6 @@ use CJ::CJVars;
 use Data::Dumper;
 use feature 'say';
 
-
-
 ####################
 # class constructor
 sub new {
@@ -27,12 +25,6 @@ sub new {
     }, $class;
     return $self;
 }
-
-
-
-
-
-
 
 sub __apply_install{
     
@@ -68,13 +60,6 @@ sub __apply_install{
     
 }
 
-
-
-
-
-
-
-
 #########
 sub java{
     #####
@@ -98,7 +83,6 @@ echo "GETTING <JAVA> from <DISTRO>";
 if [ -f <JAVA>.tar.gz ]; then rm -f <JAVA>.tar.gz; fi;
 wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "<DISTRO>/<JAVA>.tar.gz"
 
-
 echo "INSTALLING <JAVA>";
 if [ -d <INSTALLPATH> ]; then
 printf "ERROR: directory <INSTALLPATH> exists. Aborting install. \
@@ -111,7 +95,6 @@ if [ ! -d  "<INSTALLPATH>"  ] ; then
 mkdir -p <INSTALLPATH> ;
 fi
 
-
 cp <JAVA>.tar.gz <INSTALLPATH>/.
 cd <INSTALLPATH>
 tar xzvf <JAVA>.tar.gz
@@ -123,31 +106,19 @@ export PATH=$JAVA_HOME:$PATH
 echo 'export PATH="$JAVA_HOME:$PATH" ' >> $HOME/.bashrc
 echo 'export PATH="$JAVA_HOME:$PATH" ' >> $HOME/.bash_profile
 
-
 if [ -f "$HOME/.bashrc" ]; then source $HOME/.bashrc; fi
 if [ -f "$HOME/.bash_profile" ] ; then source $HOME/.bash_profile; fi
 
-
 BASH
-
-
-
 
 $install_bash_script =~ s|<DISTRO>|$distro|g;
 $install_bash_script =~ s|<JAVA>|$java|g;
 $install_bash_script =~ s|<INSTALLPATH>|$installpath|g;
 
-
 $self->__apply_install($force_tag,$installpath, $install_bash_script);
 
     return $installpath;
 }
-
-
-
-
-
-
 
 ###########
 sub __curl{
@@ -224,11 +195,6 @@ BASH
     return $installpath;
 }
 
-
-
-
-
-
 ###########
 sub __xz{
     #######
@@ -249,7 +215,6 @@ echo "GETTING <XZ> from <DISTRO>";
 if [ -f <XZ>.tar.gz ]; then rm -f <XZ>.tar.gz; fi;
 wget --no-check-certificate "<DISTRO>/<XZ>.tar.gz"
 
-
 echo "INSTALLING <XZ>";
 if [ -d <INSTALLPATH> ]; then
 printf "ERROR: directory <INSTALLPATH> exists. Aborting install. \
@@ -262,7 +227,6 @@ if [ ! -d  "<INSTALLPATH>"  ] ; then
     mkdir -p <INSTALLPATH> ;
 fi
 
-
 cp <XZ>.tar.gz <INSTALLPATH>/.
 cd <INSTALLPATH>
 tar xzvf <XZ>.tar.gz
@@ -272,14 +236,11 @@ cd <XZ>
 make -j3
 make install
 
-
 echo 'export PATH="<INSTALLPATH>/bin:$PATH" ' >> $HOME/.bashrc
 echo 'export PATH="<INSTALLPATH>/bin:$PATH" ' >> $HOME/.bash_profile
 
-
 if [ -f "$HOME/.bashrc" ]; then source $HOME/.bashrc; fi
 if [ -f "$HOME/.bash_profile" ] ; then source $HOME/.bash_profile; fi
-
 
 BASH
     
@@ -296,19 +257,6 @@ BASH
     return $installpath;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ###########
 sub rstats{
     #######
@@ -324,7 +272,6 @@ my $installpath = "\$HOME/$self->{path}/R";
 # -------------------
 my $install_bash_script  =<<'BASH';
 #!/bin/bash -l
-
 
 if [ -n "$(which R)" ]; then
 echo "R is already installed in $(which R)";
@@ -364,7 +311,6 @@ else
     
    echo 'export PATH="<INSTALLPATH>/<R>/bin:$PATH" ' >> $HOME/.bashrc
    echo 'export PATH="<INSTALLPATH>/<R>/bin:$PATH" ' >> $HOME/.bash_profile
-
 
     if [ -f "$HOME/.bashrc" ]; then source $HOME/.bashrc; fi
     if [ -f "$HOME/.bash_profile" ] ; then source $HOME/.bash_profile; fi
@@ -415,26 +361,6 @@ BASH
 return 1;
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #############
 sub composer{
@@ -513,7 +439,6 @@ my $install_bash_script =<<'BASH';
             
     fi
 
-
 BASH
   
 $install_bash_script =~ s|<DISTRO>|$distro|g;
@@ -528,21 +453,6 @@ $install_bash_script =~ s|<INSTALLPATH>|$installpath|g;
 return 1;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ##############
 sub miniconda{
@@ -612,29 +522,10 @@ $install_bash_script =~ s|<MINICONDA>|$miniconda|g;
 $install_bash_script =~ s|<INSTALLPATH>|$installpath|g;
 # -----------------
 
-
     $self->__apply_install($force_tag,$installpath, $install_bash_script);
     
     return 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #############
 sub anaconda{
@@ -691,7 +582,6 @@ else
     
 fi
 
-
     
 BASH
     
@@ -705,30 +595,6 @@ $install_bash_script =~ s|<INSTALLPATH>|$installpath|g;
    
     return 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #########
 sub cvx {
@@ -790,6 +656,5 @@ return 1;
     
     
     
-
 
 1;

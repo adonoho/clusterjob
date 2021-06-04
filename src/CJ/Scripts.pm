@@ -13,7 +13,6 @@ use CJ::Python;
 use feature 'state';
 use feature 'say';
 
-
 sub build_rrun_bashMain_script{
 my ($extra) = @_;
     
@@ -47,8 +46,6 @@ return $array_bashMain_script;
     
 }
 
-
-
 sub build_rrun_master_script
 {
     my ($nloop, $idx_tags,$ranges,$extra) = @_;
@@ -81,8 +78,6 @@ sub build_rrun_master_script
     return  $master_script;
 }
 
-
-
 sub build_nloop_master_script
 {
 	my ($nloop, $idx_tags,$ranges,$extra) = @_;
@@ -114,9 +109,6 @@ sub nForLoop
 		
         return $master_script;	
 }
-
-
-
 
 sub build_nloop_code
 {		   
@@ -176,15 +168,6 @@ sub build_nloop_code
        $master_script = &CJ::Scripts::make_master_script($master_script,$runflag,$program,$date,$pid,$ssh,$submit_defaults,$qSubmitDefault,$user_submit_defaults,$remote_sep_Dir,$qsub_extra,$counter);
 	   return ($counter,$master_script);
 }
-
-
-
-
-
-
-
-
-
 
 ##########################
 sub build_conda_venv_bash{
@@ -246,7 +229,6 @@ fi
 
 BASH
 
-
 $env =~ s|<version_tag>|$python_version_tag|g;
 $env =~ s|<libs>|$user_required_pyLib|g;
 $env =~ s|<CONDA_VENV>|$venv|g;
@@ -255,14 +237,6 @@ $env =~ s|<ssh_config_check>|$ssh_config_check|g;
 return $env;
     
 }
-
-
-
-
-
-
-
-
 
 #######################
 # Build master script
@@ -301,11 +275,9 @@ $master_script.="$docstring";
 
 }
 
-
 #my $pid_head = substr($pid,0,8);  #short_pid
 
     my ($programName,$ext) = &CJ::remove_extension($program);
-
 
     if ($runflag  =~ /\brrun\b|\brdeploy\b/){
     
@@ -414,8 +386,6 @@ $master_script.="$docstring";
     return $master_script;
 }
 
-
-
 ######################
 sub make_shell_script{
 ######################
@@ -430,8 +400,6 @@ return $sh_script;
     
 
 }
-
-
 
 ############################
 sub make_CJrun_bash_script{
@@ -451,9 +419,6 @@ return $CJrun_bash_script;
     
 }
 
-
-
-
 ###############################
 sub make_CJrun_par_bash_script{
 ###############################
@@ -471,10 +436,6 @@ sub make_CJrun_par_bash_script{
 
         return $CJrun_bash_script;
 }
-
-
-
-
 
 ###############################
 # parallel shell script

@@ -250,7 +250,6 @@ Optional. If you like you can pass the exception into C<kiss>. If not, it will j
 
 =back
 
-
 =head3 hug
 
 Some nice sugar to trap any exception.
@@ -266,7 +265,6 @@ Some nice sugar to trap any exception.
 Optional. If you like you can pass the exception into C<hug>. If not, it will just use whatever is in C<$@>.
 
 =back
-
 
 =head3 bleep 
 
@@ -297,7 +295,6 @@ Calls C<bleep>, and then exits with error code
 Optional. You can pass an exception into C<barf> which then gets passed to C<bleep> otherwise it will use whatever's in C<$@>
 
 =back
-
 
 =head2 Object-Oriented Interface
 
@@ -447,12 +444,9 @@ Works exactly like C<kiss>. See C<kiss> for details.
 
 Works exactly like C<hug>. See C<hug> for details.
 
-
 =head1 REQUIREMENTS
 
 Requires Perl 5.12 or higher.
-
-
 
 =head1 SUPPORT
 
@@ -467,7 +461,6 @@ L<http://github.com/rizen/Ouch>
 L<http://github.com/rizen/Ouch/issues>
 
 =back
-
 
 =head1 SEE ALSO
 

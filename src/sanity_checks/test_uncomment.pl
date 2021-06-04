@@ -16,6 +16,5 @@ sub uncomment_python_line{
     $line =~ s/^(?:(?![\"|\']).)*\K\#(.*)//;
     
 
-
     return $line;
 }

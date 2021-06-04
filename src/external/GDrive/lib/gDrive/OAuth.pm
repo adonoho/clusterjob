@@ -7,25 +7,6 @@ use JSON::XS;
 use POSIX;
 use MIME::Base64;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 =head1 NAME
 
 gDrive::OAuth - Auth token generation for Google Drive service account (Server to Server);
@@ -35,14 +16,6 @@ gDrive::OAuth - Auth token generation for Google Drive service account (Server t
 use gDrive::OAuth;
 
 my $token = gDrive::OAuth->new(token => 'xxxxxxxxx', admin => 'true', data => { uid => '1' } )->create_token();
-
-
-
-
-
-
-
-
 
 =head1 LICENSE AND COPYRIGHT
  

@@ -17,7 +17,6 @@ use FindBin qw($Bin);
 
 #use Crypt::JWT qw(decode_jwt);
 
-
 has token_version => (
     is      => 'rw',
     default => sub { 0 },
@@ -124,8 +123,6 @@ sub read_id_token {
     return $cred;
 }
 
-
-
 sub get_id_token{
     
     my ($self) = @_;
@@ -163,7 +160,6 @@ sub get_custom_token {
   $self->custom_token(decode_json($result)->{token});
 }
 
-
 sub get_token {
   my ($self) = @_;
     
@@ -186,9 +182,6 @@ sub get_token {
     my $token = $self->expires ? $self->create_token : $cred->{'token'};
     return $token;
 }
-
-
-
 
 sub create_jwt {
     my ($self, $data) = @_;
@@ -228,8 +221,6 @@ sub encode_jwt {
     return $secure_bits . $self->token_seperator . $self->urlbase64_encode($self->sign($secure_bits));
 }
 
-
-
 sub urlbase64_encode {
     my ($self, $data) = @_;
     $data = encode_base64($data, '');
@@ -242,7 +233,6 @@ sub sign {
     return hmac_sha256($bits, $self->secret);
 }
 
-
 sub escape {
     my $string = shift;
     $string =~ s{([\x00-\x29\x2C\x3A-\x40\x5B-\x5E\x60\x7B-\x7F])}
@@ -250,12 +240,6 @@ sub escape {
     $string = encode('ascii', $string, sub { sprintf '%%u%04X', $_[0] });
     return $string;
 }
-
-
-
-
-
-
 
 # helper functions
 sub writeFile
@@ -281,7 +265,6 @@ sub writeFile
     close $fh ;
 }
 
-
 sub readFile
 {
     my ($filepath)  = @_;
@@ -305,15 +288,6 @@ sub readFile
     
 }
 
-
-
-
-
-
-
-
-
-
 =head1 NAME
 
 Firebase::Auth - Auth token generation for firebase.com.
@@ -324,14 +298,11 @@ Firebase::Auth - Auth token generation for firebase.com.
 
  my $token = Firebase::Auth->new(token => 'xxxxxxxxx', admin => 'true', data => { uid => '1' } )->create_token();
 
-
 =head1 DESCRIPTION
 
 This module provides a Perl class to generate auth tokens for L<http://www.firebase.com>. See L<https://www.firebase.com/docs/security/custom-login.html> for details on the spec.
 
-
 =head1 METHODS
-
 
 =head2 new
 
@@ -375,7 +346,6 @@ Defaults to C<.>
 
 =back
 
-
 =head2 urlbase64_encode
 
 URL base-64 encodes a string, and then does some minor translation on it to make it compatible with Firebase.
@@ -387,9 +357,6 @@ URL base-64 encodes a string, and then does some minor translation on it to make
 The string to encode.
 
 =back
-
-
-
 
 =head2 create_token
 
@@ -403,8 +370,6 @@ Required if not specified in constructor. Defaults to the C<data> element in the
 
 =back
 
-
-
 =head2 create_claims
 
 Generates a list of claims based upon the options provided to the constructor.
@@ -416,8 +381,6 @@ Generates a list of claims based upon the options provided to the constructor.
 Required. A hash reference of user data you wish to pass to the service. It must have a C<uid> key that contain's the users unique user id, which must be a non-null string that is no longer than 256 characters.
 
 =back
-
-
 
 =head2 encode_token
 
@@ -431,7 +394,6 @@ Required. A list of claims as created by C<create_claims>
 
 =back
 
-
 =head2 sign
 
 Generates a signature based upon a string of data.
@@ -444,8 +406,6 @@ A string to sign.
 
 =back
 
-
-
 =head1 EXCEPTIONS
 
 This module may L<Ouch> exceptions.
@@ -457,8 +417,6 @@ This will be thrown if a required parameter was not set. For example the C<uid> 
 =head2 param out of range
 
 This will be thrown if a parameter is outside it's acceptable range. For example the C<uid> key in the C<data> payload.
-
-
 
 =head1 AUTHOR
 
@@ -474,8 +432,6 @@ JT Smith, C<< <jt at plainblack.com> >>
 
 =back
 
-
-
 =head1 SUPPORT
 
 =over
@@ -489,9 +445,6 @@ L<https://github.com/rizen/Firebase>
 L<https://github.com/rizen/Firebase/issues>
 
 =back
-
-
-
 
 =head1 LICENSE AND COPYRIGHT
 
@@ -532,7 +485,6 @@ YOUR LOCAL LAW. UNLESS REQUIRED BY LAW, NO COPYRIGHT HOLDER OR
 CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, OR
 CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 
 =cut
 

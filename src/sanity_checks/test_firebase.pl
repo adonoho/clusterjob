@@ -18,5 +18,4 @@ my $result = $fb->put('hatef/ba92fg33', { username => 'hatef', pid => 'ba92fg33'
 my $result = $fb->get('foo');
 my $result = $fb->delete('foo');
 
-
  

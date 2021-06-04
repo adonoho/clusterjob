@@ -8,8 +8,6 @@ use CJ;
 use Data::Dumper;
 use feature 'say';
 
-
-
 ####################
 sub new {
 ####################
@@ -24,7 +22,6 @@ sub new {
 		
 	return $self;
 }
-
 
 #####################
 sub parse {
@@ -98,13 +95,9 @@ sub parse {
 	$parser->{nloop} = $#forlines_idx_set+1;
     $parser->{CJbang} = \@CJbang;
 
-
     return $parser;
 	
 }
-
-
-
 
 ##################################
 sub build_reproducible_script{
@@ -141,8 +134,6 @@ my $rp_program = "reproduce_$self->{program}";
 CJ::writeFile("$self->{path}/$rp_program", $rp_program_script);
     
 }
-
-
 
 ###################################
 sub getPIDJobCountExpr{
@@ -225,12 +216,6 @@ $script =~ s|<PY_VENV>|$venv_name|;
 return $script;
     
 }
-
-
-
-
-
-
 
 ##########################
 sub CJrun_par_body_script{
@@ -332,8 +317,6 @@ $script =~ s|<PY_VENV>|$venv_name|;
 return $script;
 }
 
-
-
 ################################
 sub read_python_array_values{
 ################################
@@ -355,7 +338,6 @@ sub read_python_array_values{
     }
     
 }
-
 
 #############################################################
 # This function is used for parsing the content of _for_ line
@@ -392,9 +374,6 @@ sub read_python_lohi{
     
     return $lohi;
 }
-
-
-
 
 ##########################
 sub read_python_index_set{
@@ -472,9 +451,6 @@ sub read_python_index_set{
     return ($idx_tag, $range);
 }
 
-
-
-
 ##################################
 sub run_python_index_interpreter{
 ##################################
@@ -508,8 +484,6 @@ my $python_check_bash = <<CHECK_BASH;
 python '$check_path/$check_name'  &>$junk;
 CHECK_BASH
 
-
-
 &CJ::message("Checking command 'python' is available...",1);
     
 CJ::my_system("[ -f \"~/.bash_profile\" ] && . \"~/.bash_profile\"; [ -f \"~/.bashrc\" ] && . ~/.bashrc ; printf '%s' $python_check_bash",$verbose);  # this will generate a file test_file
@@ -526,12 +500,10 @@ if($@){
 &CJ::message("python available.",1);
 };
 
-
 # build a script from top to output the range of index
 
 # Add top
 my $python_interpreter_script=$TOP;
-
 
 # Add for lines
 foreach my $i (0..$#{$for_lines}){
@@ -582,7 +554,6 @@ import $name
 HERE
 BASH
 
-
 &CJ::message("finding range of indices...",1);
 
   
@@ -615,7 +586,6 @@ if($@){
     
 &CJ::message("Closing Python session!",1);
 
-
     
     
     
@@ -627,7 +597,6 @@ if($@){
 return $range;
 
 }
-
 
 #####################
 sub findIdxTagRange{
@@ -696,9 +665,6 @@ sub findIdxTagRange{
     return (\@idx_tags,$ranges);
 }
 
-
-
-
 ############################
 sub uncomment_python_line{
 ############################
@@ -708,8 +674,6 @@ sub uncomment_python_line{
     $line =~ s/^(?:(?![\"|\']).)*\K\#(.*)//;
     return $line;
 }
-
-
 
 #############################
 sub buildParallelizedScript{
@@ -741,8 +705,6 @@ return $new_script;
 
 }
 
-
-
 #######################
 sub _CJbang_substitute{
 #######################
@@ -771,11 +733,6 @@ sub _CJbang_substitute{
 
 }
 
-
-
-
-
-
 #####################
 sub get_CJbang {
 #####################
@@ -793,44 +750,11 @@ sub get_CJbang {
     }
 close $fh;
 
-
 return @CJbang;
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ############################## UP TO HERE EDITED  FOR PY #####################
-
-
-
-
 
 ##########################
 sub check_initialization{
@@ -872,8 +796,5 @@ sub check_initialization{
     }
 
 }
-
-
-
 
 1;
