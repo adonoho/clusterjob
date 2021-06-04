@@ -8,9 +8,6 @@ use CJ;
 use CJ::CJVars;
 use Data::Dumper;
 
-
-
-
 sub gather_results{
     my ($pid, $pattern, $dir_name, $verbose) = @_;
     
@@ -149,13 +146,6 @@ GATHER
     
 }
 
-
-
-
-
-
-
-
 sub reduce_results{
 	my ($pids,$res_filename,$verbose, $text_header_lines, $force_tag) = @_;
 	
@@ -181,7 +171,6 @@ sub reduce_results{
     
     
 }
-
 
 ###########################
 sub reduce_one_pid{
@@ -358,17 +347,11 @@ return $yesno;
 
 }
 
-
-
 #==========================================================
 #            CLUSTERJOB GET
 #       ex.  clusterjob get Results.txt
 #       ex.  clusterjob get 2015JAN07_213759  Results.mat
 #==========================================================
-
-
-
-
 
 sub get_results{
     my ($pid,$subfolder,$verbose) = @_;
@@ -390,7 +373,6 @@ sub get_results{
     
     # Check Connection;
     &CJ::CheckConnection($machine);
-
 
     
     # Get current remote directory from .ssh_config
@@ -451,10 +433,6 @@ sub get_results{
     exit 0;
 }
 
-
-
-
-
 sub make_parrun_check_script{
     
 my ($info,$res_filename) = @_;
@@ -474,7 +452,6 @@ my $completed_filename  = "completed_list.cjr";
 #find the number of folders with results in it
 my @job_ids = split(',', $job_id);
 my $num_res = 1+$#job_ids;
-
 
 # header for bqs's
 my $HEADER = &CJ::bash_header($bqs);
@@ -513,13 +490,6 @@ TEXT
     ### RESULTS FILE MIGHT BE EXTENDING OVER TIME.
     return  $check_runs;
 }
-
-
-
-
-
-
-
 
 sub make_TEXT_collect_script
 {
@@ -589,11 +559,9 @@ else
     
     for LINE in \$(tail -n +\$((\$PROGRESS+1)) $completed_filename);do
 
-
         PROGRESS=\$((\$PROGRESS+1))
         # Reduce results
         COUNTER=`grep -o "[0-9]*" <<< \$LINE`
-
 
         # Remove header-lines!
         startline=\$(($num_header_lines+1));
@@ -630,15 +598,6 @@ BASH
     
 }
 
-
-
-
-
-
-
-
-
-
 #############################
 sub make_MAT_collect_script{
 #############################
@@ -664,7 +623,6 @@ else
 res = load([num2str(completed_list(1)),'/$res_filename']);
 start = 2;
 
-
 \% delete the line from remaining_filename and add it to collected.
 \%fid = fopen('$completed_filename', 'r') ;               \% Open source file.
 \%fgetl(fid) ;                                            \% Read/discard line.
@@ -683,7 +641,6 @@ end
 
 percent_done = 1/length(completed_list) * 100;
 fprintf('\\n SubPackage %d Collected (%3.2f%%)', completed_list(1), percent_done );
-
 
 end
 
@@ -725,13 +682,9 @@ fclose(fid);
 fprintf('\\n SubPackage %d Collected (%3.2f%%)', count, percent_done );
 end
 
-
 end
 
 MATLAB
-
-
-
 
 my $script = &CJ::bash_header($bqs);
     
@@ -754,8 +707,5 @@ $script =~ s|<MATLAB_MODULE>|$ssh->{mat}|;
     
 return $script;
 }
-
-
-
 
 1;

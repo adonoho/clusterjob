@@ -9,8 +9,6 @@ use File::Basename qw(dirname);
 use File::Spec;
 use IO::Socket::INET;
 
-
-
 my $sock = IO::Socket::INET->new(
     PeerAddr=> "example.com",
     PeerPort=> 80,
@@ -23,14 +21,11 @@ if (defined($sock)){
     $localIP = undef;
 }	
 
-
-
 our $localUserName = `id -un`;chomp($localUserName);  # Later on add the CJusername
 my  $CJ_dir			 = File::Basename::dirname(File::Spec->rel2abs(__FILE__));
 my  @CJ_dir_array    = split '/',$CJ_dir;
 my  $lastone 		 = pop @CJ_dir_array;
 our $src_dir  		 = join '/', @CJ_dir_array;
-
 
 my  $second2last  = pop @CJ_dir_array;
 our $install_dir  = join '/', @CJ_dir_array;
@@ -64,10 +59,8 @@ our $app_list_file      = "$src_dir/.app_list";
 our $ssh_config_md5     = "$install_dir/.ssh_config.md5";
 our $app_install_dir    = "CJinstalled";
 
-
 # Database related. Hard-coded. User need not to worry about this. Not sensitive info.
 our $CJ_API_KEY="AIzaSyDWxanHy2j8rWjeXYjJF4tULX60d1Siq9A";
-
 
 # Read AgentID
 our $AgentID= undef;
@@ -84,11 +77,9 @@ $AgentID= $line;
 if($AgentID){$AgentID =~ s/^\s+|\s+$//g};
 }
 
-
 # Read CJID and CJKEY
 our $CJID =undef;
 our $CJKEY=undef;
-
 
 my $lines;
 open(my $FILE, $remote_config_file) or  die "could not open $remote_config_file: $!";
@@ -109,11 +100,7 @@ if($KEY){
 	$CJKEY=$KEY;
 }
 
-
-
 # Export global variables
 our @EXPORT = qw( $lastSync_file $local_push_timestamp_file $pid_timestamp_file $firebase_name $AgentIDPATH $AgentID $CJID $CJKEY $CJ_API_KEY $info_dir $src_dir $install_dir $localPrefix $savePrefix $last_instance_file $get_tmp_dir $history_file $cmd_history_file $run_history_file $save_info_file $ssh_config_file $remote_config_file $CJerrorlog $CJlog_dir $CJlog_out $CJlog_error $localIP $localUserName $app_list_file $ssh_config_md5 $app_install_dir);
-
-
 
 1;

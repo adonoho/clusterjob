@@ -8,9 +8,6 @@ use CJ;
 use Data::Dumper;
 use feature 'say';
 
-
-
-
 # class constructor
 sub new {
  	my $class= shift;
@@ -24,8 +21,6 @@ sub new {
 		
 	return $self;
 }
-
-
 
 sub parse {
 	
@@ -91,9 +86,6 @@ sub parse {
 	
 }
 
-
-
-
 sub check_initialization{
 	my $self = shift;
 	
@@ -133,8 +125,6 @@ sub check_initialization{
 
 }
 
-
-
 sub build_run_script{
 	
 	my $self = shift;
@@ -161,7 +151,6 @@ quit;
 HERE
 
 RUN_SCRIPT
-
 
 my $pathText=<<MATLAB;
         
@@ -192,9 +181,6 @@ $run_script =~ s|<MATPATH>|$pathText|;
 
 	
 }
-
-
-
 
 sub build_reproducible_script{
 	
@@ -227,11 +213,7 @@ $rp_program_script .= $program_script ;
 my $rp_program = "reproduce_$self->{program}";
 CJ::writeFile("$self->{path}/$rp_program", $rp_program_script);
 
-
 }
-
-
-
 
 sub findIdxTagRange
 {
@@ -267,7 +249,6 @@ sub findIdxTagRange
     
 	}
 
-
     
 	if ( @tags_to_matlab_interpret ) { # if we need to run matlab
 	    my $range_run_interpret = $self->run_matlab_index_interpreter($TOP,\@tags_to_matlab_interpret,\@forlines_to_matlab_interpret, $verbose);
@@ -282,11 +263,6 @@ sub findIdxTagRange
     
 	return (\@idx_tags,$ranges);
 }
-
-
-
-
-
 
 sub read_matlab_index_set
 {
@@ -392,9 +368,6 @@ sub read_matlab_index_set
     return ($idx_tag, $range);
 }
 
-
-
-
 sub run_matlab_index_interpreter{
 	my $self = shift;
     my ($TOP,$tag_list,$for_lines,$verbose) = @_;
@@ -418,7 +391,6 @@ my $check_path = "/tmp";
 my $check_name= "CJ_matlab_check_script.m";
 
 &CJ::writeFile("$check_path/$check_name",$matlab_check_script);
-
 
 my $junk = "/tmp/CJ_matlab.output"; 
 
@@ -503,7 +475,6 @@ run('$self->{path}/$name')
 HERE
 BASH
 
-
     #my $bash_name = "CJ_matlab_interpreter_bash.sh";
     #my $bash_path = "/tmp";
     #&CJ::writeFile("$bash_path/$bash_name",$matlab_interpreter_bash);
@@ -528,17 +499,12 @@ foreach my $tag (@$tag_list){
 	&CJ::my_system("rm -f $tag_file", $verbose) ; #clean /tmp  
 }
 
-
 # remove the files you made in /tmp
 &CJ::my_system("rm -f $test_name $junk $check_path/$check_name $self->{path}/$name");
 
     return $range;
 	
 }
-
-
-
-
 
 sub uncomment_matlab_line{
 	my $self = shift;
@@ -548,14 +514,6 @@ sub uncomment_matlab_line{
     
     return $line;
 }
-
-
-
-
-
-
-
-
 
 ########################
 sub CJrun_body_script{
@@ -620,7 +578,6 @@ MATLAB
 $script =~ s|<MATPATH>|$pathText|;
 $script =~ s|<MATLAB_MODULE>|$ssh->{mat}|;
 
-
     return $script;
     
 }
@@ -640,13 +597,11 @@ unset _JAVA_OPTIONS
 matlab -nosplash -nodisplay <<HERE
 <MATPATH>
 
-
 % add path for parrun
 oldpath = textscan('$DIR', '%s', 'Delimiter', '/');
 newpath = horzcat(oldpath{:});
 bin_path = sprintf('%s/', newpath{1:end-1});
 addpath(genpath(bin_path));
-
 
 % make sure each run has different random number stream
 myversion = version;
@@ -700,11 +655,6 @@ $script =~ s|<MATLAB_MODULE>|$ssh->{mat}|;
     return $script;
 }
 
-
-
-
-
-
 #############################
 sub buildParallelizedScript{
 #############################
@@ -720,21 +670,10 @@ while(@tag_idx){
 
 my $str = join('||',@str);
 
-
 my $INSERT = "if ($str); continue;end";
 my $new_script = "$TOP \n $FOR \n $INSERT \n $BOT";
 undef $INSERT;
 return $new_script;
 }
-
-
-
-
-
-
-
-
-
-
 
 1;

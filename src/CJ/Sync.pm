@@ -1,6 +1,5 @@
 package CJ::Sync;
 
-
 use strict;
 use warnings;
 use CJ;
@@ -8,7 +7,6 @@ use CJ::CJVars;
 use Data::Dumper;
 use Firebase;
 use Ouch;
-
 
 # This is a class that takes care of syncing
 # Copyright 2015 Hatef Monajemi (monajemi@stanford.edu)
@@ -54,8 +52,6 @@ sub update
 	my ($var,$value) = @_;
 	$self->{$var} = $value;
 }
-
-
 
 sub request{
 
@@ -117,21 +113,15 @@ return unless @pids;
 					        &CJ::my_system($cmd,$verbose);
 				   }
 
-
 			} # Update all the PIDs
 		   #update  timestamp file;
 		   &CJ::add_to_pid_timestamp($timestamp_hashref) if defined($timestamp_hashref);
            my $result = $firebase->patch("users/${CJID}/agents/$agent", {"SyncReq" => "null"} ) ;
 }
 
-
-
-
-
 sub pull_timestamp{
 		my $self = shift;
 		my $agent = $self->{agent};
-
 
 # This type of sync is a pull sync. It checkes the pull_timestamp
 # of the agent, and pulls every pid in pid_list that has a bigger
@@ -146,12 +136,9 @@ return unless defined($pull_timestamp);
 my $last_instance = $firebase->get("users/${CJID}/last_instance");
 &CJ::writeFile($last_instance_file, $last_instance->{'pid'}) unless not defined($last_instance->{'pid'});
 
-
 # get everything bigger than the $pull_timestamp  (Efficient use of Firebase indexing)
 my $param_hash  = {"orderBy"=>"\"timestamp\"", "startAt"=>$pull_timestamp};
 my $pid_hash = $firebase->get("users/${CJID}/pid_list", $param_hash) ;
-
-
 
 # pull and write them locally
 my $updated_pull_timestamp = $pull_timestamp;
@@ -189,9 +176,6 @@ my $result = $firebase->patch("users/${CJID}/agents/$agent", {"pull_timestamp" =
 
 }
 
-
-
-
 sub push_timestamp{
 	my $self = shift;
 	my $agent = $self->{agent};
@@ -214,14 +198,12 @@ return unless defined($local_push_timestamp);
 return if ($remote_push_timestamp == $local_push_timestamp);
 CJ::warning("CJ is in awe! Push TimeStamp:: remote is bigger than local") if ($remote_push_timestamp > $local_push_timestamp);
 
-
 	# comprare the two
 	if( $remote_push_timestamp < $local_push_timestamp ){ # Some data are missing from Firebase
 
 		&CJ::message("Sending data missing from the cloud. Please be patient...");
 			# Patch all data that are available locally
 			# but missing on FB
-
 
 			my $pid_timestamp = &CJ::read_pid_timestamp();
 			my @filtered_pids = grep { $pid_timestamp->{$_} > $remote_push_timestamp } keys %$pid_timestamp;
@@ -240,12 +222,7 @@ CJ::warning("CJ is in awe! Push TimeStamp:: remote is bigger than local") if ($r
 
 	  }
 
-
-
 }
-
-
-
 
 sub GetLocalPushTimeStamp
 {
@@ -261,9 +238,5 @@ sub GetLocalPushTimeStamp
 	}
 
 }
-
-
-
-
 
 1;

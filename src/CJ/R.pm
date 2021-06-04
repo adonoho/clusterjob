@@ -10,7 +10,6 @@ use CJ::Install;
 use Data::Dumper;
 use feature 'say';
 
-
 # class constructor
 sub new {
 	my $class = shift;
@@ -25,8 +24,6 @@ sub new {
 	return $self;
 	
 }
-
-
 
 #####################
 sub parse {
@@ -57,7 +54,6 @@ close $fh;
 # this includes fors on one line
 my @lines = split('\n|[{]\s*(?=for)', $script_lines);
 
-
 my @forlines_idx_set;
 foreach my $i (0..$#lines){
     my $line = $lines[$i];
@@ -76,7 +72,6 @@ foreach my $i (0..$#forlines_idx_set-1){
     &CJ::err("CJ does not allow anything between the parallel for's. try rewriting your loops.") if($forlines_idx_set[$i+1] ne $forlines_idx_set[$i]+1);
 }
 
-
 my $TOP;
 my $FOR;
 my $BOT;
@@ -91,7 +86,6 @@ foreach my $i ($forlines_idx_set[0]+$#forlines_idx_set+1..$#lines){
     $BOT .= "$lines[$i]\n";
 }
 
-
 my $parser ={};
 $parser->{TOP} = $TOP;
 $parser->{FOR} = $FOR;
@@ -99,13 +93,9 @@ $parser->{BOT} = $BOT;
 $parser->{nloop} = $#forlines_idx_set+1;
 $parser->{CJbang} = \@CJbang;
 
-
 return $parser;
 
 }
-
-
-
 
 ##################################
 sub build_reproducible_script{
@@ -163,9 +153,6 @@ my $rp_program = "reproduce_$self->{program}";
 CJ::writeFile("$self->{path}/$rp_program", $rp_program_script);
     
 }
-
-
-
 
 #######################
 sub CJrun_body_script{
@@ -247,57 +234,12 @@ HERE
   
 BASH
 
-
 $script =~ s|<R_MODULE>|$ssh->{'r'}|g;
 $script =~ s|<RLIBPATH>|$libpath|g;
 
 return $script;
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ############################
 sub uncomment_R_line{
@@ -308,7 +250,5 @@ sub uncomment_R_line{
     $line =~ s/^(?:(?![\"|\']).)*\K\#(.*)//;
     return $line;
 }
-
-
 
 1;

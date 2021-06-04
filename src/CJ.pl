@@ -29,9 +29,7 @@ use JSON::PP;
 
 use vars qw( $user_submit_defaults $submit_defaults $qSubmitDefault $sync_status $message $dep_folder $verbose $log_script $text_header_lines $show_tag $log_tag $force_tag $qsub_extra $cmdline $sanity_expand);  # options
 
-
 $::VERSION = &CJ::version_info();
-
 
 #==========================================
 #    Get the command line history
@@ -48,8 +46,6 @@ my $cjcmd0 = $cmd[2];chomp($cjcmd0);
 if( (!-d "$info_dir" || !defined($AgentID)) & ($cjcmd0 ne "init") ){
 	&CJ::err(" This CJ agent is not initialized. Please initiate it by 'cj init'");
 }
-
-
 
 #=========================================
 #         INITIALIZE VARIABLEs
@@ -72,9 +68,6 @@ $sanity_expand     = 0;
 $submit_defaults = &CJ::submit_defaults();
 $user_submit_defaults = {};  # user can fill it up using runtime, or mem
 
-
-
-
 if( -d "$info_dir" ){
 #=========================================
 # refresh CJlog before declaring options.
@@ -83,7 +76,6 @@ if( -d "$info_dir" ){
 &CJ::my_system("rm $CJlog_error") unless (! -f $CJlog_error);
 
 #=========================================
-
 
 # Dont sync if the command is one of these.
 my @nosync_cmds = qw ( init who help -help -h -Help -HELP prompt version -v install-update sanity);
@@ -99,7 +91,6 @@ if($CJKEY && (!exists($nosync{$cjcmd0})) ){
 }
 
 }
-
 
 my $spec = <<'EOSPEC';
       prompt 	      opens CJ prompt command [undocumented]
@@ -143,7 +134,6 @@ my $spec = <<'EOSPEC';
      --header [=]  <num_lines:+i>	                  number of header lines for reducing text files [requires: reduce]
                                                                {$text_header_lines=$num_lines;}
      --update                                         	  updates accordingly [requires: config]
-
 
      -alloc[ate]   <resources>	                          machine specific allocation [nocase]
                                                                 {$qsub_extra=$resources}
@@ -247,9 +237,6 @@ EOSPEC
 
 my $opts = Getopt::Declare->new($spec);
 
-
-
-
 if($opts->{'connect'}){
     CJ::message("connecting to $opts->{'connect'}");
     &CJ::connect2cluster($opts->{'connect'}, $verbose);
@@ -304,8 +291,6 @@ if($opts->{who})
 #mimi	    print out mimi    [undocumented]
 #{print $/;print $"x(15&ord), "Mimi", $/x/\D/ for'3h112a05e0n1l2j4f6b9'=~/./g; print $/;}
 
-
-
 if($opts->{'reduce'})
 {
     &CJ::add_cmd($cmdline);
@@ -320,25 +305,12 @@ if($opts->{'sanity'})
     &CJ::Sanity::sanity($opts->{'sanity'}{'<type>'}, $opts->{'sanity'}{'<pid>'},$verbose,$sanity_expand);
 }
 
-
 if($opts->{'install'})
 {
     &CJ::add_cmd($cmdline);
     my $force_tag = defined($opts->{'install'}{'-f'}) ? 1 : 0;
     &CJ::install_software($opts->{'install'}{'<app>'},$opts->{'install'}{'<cluster>'}, $force_tag)
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 sub cj_heart{
     
@@ -358,28 +330,6 @@ sub cj_heart{
     print "\n";
     print "\n";
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #==========================
 #   prompt
@@ -435,10 +385,6 @@ sub cj_prompt{
         
 }
 
-
-
-
-
 #========================================================================
 #            CLUSTERJOB RUN/DEPLOY/PARRUN
 #  ex.  clusterjob run myScript.m sherlock -dep DepFolder -m  "my reminder"
@@ -461,7 +407,6 @@ sub run{
     }
 }
     
-
 
 #====================================
 #       USEFUL SUBs

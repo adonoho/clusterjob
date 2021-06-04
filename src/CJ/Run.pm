@@ -10,8 +10,6 @@ use Data::Dumper;
 use feature 'say';
 use Digest::SHA qw(sha1_hex); # generate hexa-decimal SHA1 PID
 
-
-
 ####################
 # class constructor
 sub new {
@@ -38,7 +36,6 @@ sub new {
 	return $self;
 }
 
-
 ##############################################
 # if user definded alloc change submit default
 sub _update_qsub_extra {
@@ -53,10 +50,6 @@ sub _update_qsub_extra {
         }
     }
 }
-
-
-
-
 
 ###########################################
 # This should be called at the beginning of
@@ -78,7 +71,6 @@ my $pid  = sha1_hex("$sha_expr");
 my $short_pid = &CJ::short_pid($pid);  # we use an 8 character abbrviation
 CJ::message("initiating package \033[32m$short_pid\033[0m");
 
-
 #  Check to see if the file and dep folder exists
 &CJ::err("$self->{path}/$self->{program} not found") if(! -e "$self->{path}/$self->{program}" );
 if(defined($self->{dep_folder})){
@@ -95,9 +87,7 @@ if(defined($self->{dep_folder})){
 my ($program_name,$ext) = &CJ::remove_extension($self->{program});
 my $program_type = CJ::program_type($self->{program});
 
-
 CJ::message("$self->{runflag}"."ing [$self->{program}] on [$self->{machine}] with:");
-
 
 # whatever is in qsub_extra
 &CJ::message("alloc: $self->{qsub_extra}",1);
@@ -119,19 +109,11 @@ if ( not (defined($ssh->{alloc}) and $ssh->{alloc} !~/^\s*$/) ) {
     &CJ::message("cj   : $str",1) if ($str ne "");
 }
 
-
-
-
-
-
 &CJ::message("sending from: $self->{path}");
-
-
 
 my $localDir       = "$localPrefix/"."$program_name";
 my $local_sep_Dir  = "$localDir/" . "$pid"  ;
 my $saveDir        = "$savePrefix"."$program_name";
-
 
 #====================================
 #     CREATE LOCAL DIRECTORIES
@@ -148,7 +130,6 @@ if(-d $localPrefix){
     mkdir "$localDir" unless (-d $localDir);
     mkdir "$local_sep_Dir" unless (-d $local_sep_Dir);
 }
-
 
 # cp code
 my $cmd = "cp $self->{path}/$self->{program} $local_sep_Dir/";
@@ -207,15 +188,6 @@ $self->check_LMOD_avail($pid,$ssh) if ($program_type eq 'matlab');
 return ($date,$ssh,$pid,$short_pid,$program_type,$localDir,$local_sep_Dir,$remoteDir,$remote_sep_Dir,$saveDir,$outText);
 }
 
-
-
-
-
-
-
-
-
-
 #########################################################
 #   clusterjob run myscript.m -dep DEP -m "message"
 #   Serial run
@@ -244,7 +216,6 @@ my $local_sh_path = "$local_sep_Dir/bashMain.sh";
 my $master_script;
     
 $master_script = &CJ::Scripts::make_master_script($master_script,$self->{runflag},$self->{program},$date,$pid,$ssh,$self->{submit_defaults},$self->{qSubmitDefault},$self->{user_submit_defaults},$remote_sep_Dir,$self->{qsub_extra});
-
 
 my $local_master_path="$local_sep_Dir/master.sh";
 &CJ::writeFile($local_master_path, $master_script);
@@ -286,17 +257,10 @@ $self->{runflag} eq "deploy" ? &CJ::message("Deployed.") : &CJ::message("Submitt
 $cmd = "ssh $ssh->{account} 'source ~/.bashrc && cd $remoteDir/${pid} && bash -l master.sh > $remote_sep_Dir/qsub.info && sleep 3'";
 &CJ::my_system($cmd,$self->{verbose}) unless ($self->{runflag} eq "deploy");
 
-
-
 # bring the log file
 my $qsubfilepath="$remote_sep_Dir/qsub.info";
 $cmd = "rsync -avz $ssh->{account}:$qsubfilepath  $info_dir";
 &CJ::my_system($cmd,$self->{verbose}) unless ($self->{runflag} eq "deploy");
-
-
-
-
-
 
 my $job_id="";
 if($self->{runflag} eq "run"){
@@ -320,8 +284,6 @@ if($self->{runflag} eq "run"){
 }else{
     $job_id ="";
 }
-
-
 
 my $runinfo={
     pid           => ${pid},
@@ -356,8 +318,6 @@ my $runinfo={
 &CJ::write2firebase($pid,$runinfo,$date->{epoch},0);
 }
 
-
-
 #========================================================
 #   clusterjob parrun myscript.m -dep DEP -m "message"
 #   this implements parrallel for in perl
@@ -391,7 +351,6 @@ foreach my $i (0..$parser->{nloop}-1){
     
 my $max_jobs = &CJ::max_jobs_allowed($ssh,$self->{qsub_extra});
 &CJ::err("Maximum jobs allowed on $self->{machine} ($max_jobs) exceeded by your request ($totalJobs). Rewrite FOR loops to submit in smaller chunks.") unless  ($max_jobs >= $totalJobs);
-
 
 #Check that user has initialized for loop vars
 $codeobj->check_initialization($parser,$idx_tags,$self->{verbose});
@@ -430,7 +389,6 @@ my $master_script = &CJ::Scripts::build_nloop_master_script($nloops, $idx_tags,$
 my $local_master_path="$local_sep_Dir/master.sh";
 &CJ::writeFile($local_master_path, $master_script);
 
-
 #==================================
 #       PROPAGATE THE FILES
 #       AND RUN ON CLUSTER
@@ -443,7 +401,6 @@ my $cmd="cd $localDir; tar --exclude '.git' --exclude '*~' --exclude '*.pdf' -cz
 # create remote directory  using outText
 $cmd = "ssh $ssh->{account} 'echo `$outText` '  ";
 &CJ::my_system($cmd,$self->{verbose});
-
 
     
 my $pkgsize = CJ::getFileSize("${localDir}/${tarfile}") ;
@@ -472,8 +429,6 @@ $cmd = "ssh $ssh->{account} 'source ~/.bashrc && cd $remoteDir/${pid} && bash -l
 my $qsubfilepath="$remote_sep_Dir/qsub.info";
 $cmd = "rsync -avz $ssh->{account}:$qsubfilepath  $info_dir/";
 &CJ::my_system($cmd,$self->{verbose}) unless ($self->{runflag} eq "pardeploy");
-
-
 
 my $job_ids;
 my $job_id;
@@ -506,9 +461,6 @@ if($self->{runflag} eq "parrun"){
     $job_id = "";
 }
 
-
-
-
 my $runinfo={
     pid           => ${pid},
     user          => ${CJID},  # will be changed to CJusername later
@@ -536,13 +488,9 @@ my $runinfo={
     pkgsize       => $pkgsize,
 };
 
-
 &CJ::add_record($runinfo);
 &CJ::write2firebase($pid,$runinfo, $date->{epoch},0);  # send to CJ server
 }
-
-
-
 
 sub _checkSubmitSuccess{
 
@@ -564,20 +512,6 @@ sub _checkSubmitSuccess{
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #========================================================
 #   clusterjob rrun myscript.m -dep DEP -m "message"
@@ -641,7 +575,6 @@ my $max_arraySize   = &CJ::max_slurm_arraySize($ssh);
 # Check that user has initialized for loop vars
 $codeobj->check_initialization($parser,$idx_tags,$self->{verbose});
 
-
     
 #==============================================
 #        MASTER SCRIPT
@@ -695,7 +628,6 @@ my $cmd="cd $localDir; tar --exclude '.git' --exclude '*~' --exclude '*.pdf' -cz
 $cmd = "ssh $ssh->{account} 'echo `$outText` '  ";
 &CJ::my_system($cmd,$self->{verbose});
 
-
     my $pkgsize = CJ::getFileSize("${localDir}/${tarfile}") ;
     my $pkgsize_human=&CJ::formatFileSize($pkgsize);
     &CJ::message("sending \033[32m$pkgsize_human\033[0m to: $self->{machine}:$remoteDir");
@@ -715,13 +647,10 @@ my $wait = int($totalJobs/300) + 2 ; # add more wait time for large jobs so the 
 $cmd = "ssh $ssh->{account} 'source ~/.bashrc && cd $remoteDir/${pid} && bash -l master.sh > $remote_sep_Dir/qsub.info && sleep $wait'";
 &CJ::my_system($cmd,$self->{verbose}) unless ($self->{runflag} eq "rdeploy");
 
-
-
 # bring the log file
 my $qsubfilepath="$remote_sep_Dir/qsub.info";
 $cmd = "rsync -avz $ssh->{account}:$qsubfilepath  $info_dir/";
 &CJ::my_system($cmd,$self->{verbose}) unless ($self->{runflag} eq "pardeploy");
-
 
     
     
@@ -751,7 +680,6 @@ $cmd = "rsync -avz $ssh->{account}:$qsubfilepath  $info_dir/";
     }
     
 
-
 my $runinfo={
 pid           => ${pid},
 user          => ${CJID},
@@ -780,15 +708,9 @@ total_jobs    => $totalJobs,
 pkgsize       => $pkgsize,
 };
 
-
 &CJ::add_record($runinfo);
 &CJ::write2firebase($pid,$runinfo, $date->{epoch},0);  # send to CJ server
 }
-
-
-
-
-
 
 #########################
 sub setup_conda_venv{
@@ -845,10 +767,6 @@ sub setup_conda_venv{
     }
     
 }
-
-
-
-
 
 #########################
 sub setup_R_env{
@@ -919,8 +837,6 @@ return 1;
     
 }
 
-
-
 ########################
 sub check_LMOD_avail{
     #####################
@@ -967,32 +883,5 @@ sub check_LMOD_avail{
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 1;

@@ -28,10 +28,7 @@ $version_script  .=  "\n          https://clusterjob.org";
     return $version_script ;
 }
 
-
-
 sub init{
-
 
 	# Generate a uuid for this installation 
 	my $ug    = Data::UUID->new;
@@ -84,10 +81,7 @@ sub init{
 		&CJ::AutoSync() unless ($@);
 	}
 
-
 }
-
-
 
 sub parse_qsub_extra{
         my ($qsub_extra) = @_;
@@ -105,7 +99,6 @@ sub parse_qsub_extra{
 return $args;
 }
 
-
 sub CheckConnection{
     my ($cluster) = @_;
     
@@ -121,10 +114,6 @@ sub CheckConnection{
     return 1;
 }
 
-
-
-
-
 sub max_slurm_arraySize{
 
     my($ssh) = @_;
@@ -137,7 +126,6 @@ sub max_slurm_arraySize{
     return $max_array_size;
     
 }
-
 
 sub max_jobs_allowed{
 	my ($ssh, $qsub_extra) = @_;
@@ -200,10 +188,6 @@ if($bqs eq "SLURM"){
 	return $jobs_allowed;
 }
 
-
-
-
-
 sub check_hash {
    my( $hash, $keys ) = @_;
 
@@ -216,7 +200,6 @@ sub check_hash {
 
    return 1;
 }
-
 
 sub write2firebase
 {
@@ -268,8 +251,6 @@ sub write2firebase
 
 }
 
-
-
 sub add_agent_to_remote{
 	# This is the first time agent is added.
     my $firebase = Firebase->new(firebase => $firebase_name, jwt => $CJKEY, api_key => $CJ_API_KEY);
@@ -311,16 +292,11 @@ sub informOtherAgents{
 	  }	
 	
 
-
-
 }
-
-
 
 sub sync_forced
 {
 	my ($status) = @_;
-
 
 	return if $status;   #if AutoSync has been done, don't sync it again.
 
@@ -378,9 +354,6 @@ sub getLastSync
 	
 }
 
-
-
-
 sub rerun
 {
     my ($pid,$counter,$submit_defaults,$qSubmitDefault,$user_submit_defaults,$qsub_extra,$verbose) = @_;
@@ -428,7 +401,6 @@ sub rerun
             }
         }
     }
-
 
     
 
@@ -525,7 +497,6 @@ my $cmd = "rsync -arvz  $local_master_path ${account}:$remote_path/";
     
 my $runinfo    = join(',', @runinfo);
 
-
 my $type = "rerun";
 my $change = {new_job_id => $job_id,
               date       => $date, 
@@ -536,7 +507,6 @@ my $change = {new_job_id => $job_id,
 			  
 my $newinfo = &CJ::add_change_to_run_history($info->{'pid'}, $change, $type);
 
-
 &CJ::add_to_history($newinfo,$date,$type);
 
 # write runinfo to FB as well
@@ -546,10 +516,6 @@ my $inform = 1;
 
 exit 0;
 }
-
-
-
-
 
 # This is the CJ confirmation included in the
 # reproducible package
@@ -599,17 +565,11 @@ my $cmd = "chmod +x $path/CJ_CONFIRMATION.TXT";
 
 }
 
-
-
-
-
 #=================================================================
 #            CLUSTERJOB SAVE (ONLY SAVES THE OUTPUT OF 'GET')
 #  ex.  clusterjob save pid
 #  ex.  clusterjob save pid ~/Downloads/myDIR
 #=================================================================
-
-
 
 sub save_results{
     
@@ -680,8 +640,6 @@ sub save_results{
     exit 0;
 }
 
-
-
 sub show_cmd_history{
     my ($argin) = @_;
 
@@ -708,10 +666,7 @@ sub show_cmd_history{
     
     exit 0;
 
-
 }
-
-
 
 sub show_history{
     my ($history_argin) = @_;
@@ -737,9 +692,6 @@ sub show_history{
     exit 0;
     
 }
-
-
-
 
 sub show_log{
     my ($log_argin, $log_tag, $log_script) = @_;
@@ -833,19 +785,7 @@ sub show_log{
     
     exit 0;
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
 
 sub  print_detailed_log{
     my ($pid) = @_;
@@ -878,8 +818,6 @@ sub clean
     
     
     my $short_pid = substr($pid,0,8);
-
-
 
     if( defined($info->{'clean'})){
         CJ::message("Nothing to clean. Package $short_pid has been cleaned on $info->{'clean'}->{'date'}->{'datestr'}.");
@@ -968,10 +906,6 @@ exit 0;
 
 }
 
-
-
-
-
 sub get_info{
     my ($pid) = @_;
     
@@ -1001,8 +935,6 @@ sub get_info{
     return $info;
     
 }
-
-
 
 sub show
 {
@@ -1090,17 +1022,6 @@ sub show
     
 }
 
-
-
-
-
-
-
-
-
-
-
-
 sub show_info
 {
     my ($pid) = @_;
@@ -1149,18 +1070,6 @@ sub show_info
     exit 0;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 sub get_summary
 {
@@ -1266,13 +1175,10 @@ sub get_summary
 #
 # 		}
 
-
 		$print_states->{$this_pid} = join(",",@this_unique_states);
  	}
 
-
 	@unique_states = do { my %seen; grep { !$seen{$_}++ } @unique_states};
-
 
     #print '-' x 35;print "\n";
     print "\n";
@@ -1296,9 +1202,6 @@ sub get_summary
 	
 }
 
-
-
-
 sub numeric_month(){
     my ($mon) = @_;
     
@@ -1319,8 +1222,6 @@ sub numeric_month(){
         
         return $month_map->{$mon};
 }
-
-
 
 sub get_state
 {
@@ -1432,7 +1333,6 @@ if ( $runflag =~ m/^parrun$/ ){
         $states->{$key} = $val;
     }
 
-
 }else{
 	    my $state;
 	    if($bqs eq "SGE"){
@@ -1461,10 +1361,6 @@ if ( $runflag =~ m/^parrun$/ ){
 	
             
    
-
-
-
-
 
 sub get_print_state
 {
@@ -1590,7 +1486,6 @@ if($runflag =~ m/^run$/){
 }
 	
 
-
 sub grep_config_var
 {
 	my ($filepath, $var_pattern) = @_;
@@ -1623,10 +1518,6 @@ sub grep_var_line
     }
 }
 
-
-
-
-
 #
 # sub remote{
 #
@@ -1649,7 +1540,6 @@ sub grep_var_line
 #     return $remote_config;
 # }
 
-
 sub add_record{
 	my ($info) = @_;
     
@@ -1659,12 +1549,6 @@ sub add_record{
 	&CJ::update_local_push_timestamp($info->{date}{epoch});
 	&CJ::update_last_instance($info->{'pid'});
 }
-
-
-
-
-
-
 
 sub show_cluster_config{
     
@@ -1688,12 +1572,6 @@ sub show_cluster_config{
     return 1;
 }
 
-
-
-
-
-
-
 sub cluster_config_template{
     # for sorting purposes
     my @config_keys=('Host','User','Bqs','Alloc','Repo','MAT','MATlib','Python','Pythonlib','R','Rlib');
@@ -1713,7 +1591,6 @@ sub cluster_config_template{
     
     return ($cluster_config,\@config_keys);
 }
-
 
 sub update_cluster_config{
     
@@ -1885,8 +1762,6 @@ sub update_cluster_config{
     
 }
 
-
-
 sub read_ssh_config{
     
     my $ssh_config = {};
@@ -1906,16 +1781,12 @@ sub read_ssh_config{
     return $ssh_config;
 }
 
-
-
 sub host{
     my ($machine_name) = @_;
     my $ssh_config_hashref =  &CJ::read_ssh_config();
     &CJ::err(".ssh_config:: machine $machine_name not found. ") unless &CJ::check_hash($ssh_config_hashref, [$machine_name]) ;
     return $ssh_config_hashref->{$machine_name};
 }
-
-
 
 sub r_lib_path{
 
@@ -1938,9 +1809,6 @@ sub r_lib_path{
     my $libpath = "\$HOME/$install_path/R/$r_version_tag/lib";
 
 }
-
-
-
 
 sub parse_ssh_config{
     my ($this_machine_string) = @_;
@@ -2005,13 +1873,6 @@ sub parse_ssh_config{
 
 }
 
-
-
-
-
-
-
-
 sub retrieve_package_info{
     
     my ($pids) = @_;
@@ -2055,8 +1916,6 @@ sub retrieve_package_info{
 	
 }
 
-
-
 sub update_last_instance
 {
 	my ($pid) = @_;
@@ -2069,7 +1928,6 @@ sub update_local_push_timestamp
 # create the file if it doesnt exist.	
 &CJ::writeFile($local_push_timestamp_file, $timestamp)	
 }
-
 
 sub read_pid_timestamp
 {
@@ -2087,7 +1945,6 @@ my ($timestamp_hashref) = @_;
 # create the file if it doesnt exist.	
 &CJ::create_pid_timestamp_file();
 
-
 my $hash = &CJ::read_pid_timestamp();
 
 # add this timestamp
@@ -2103,26 +1960,7 @@ my $contents = encode_json $hash if defined($hash);
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 sub date{
-
 
 my $t = &Time::Piece::localtime;
 #print $t->epoch . "\n";die;
@@ -2177,8 +2015,6 @@ my $date = {
     return $date;
 }
 
-
-
 #####################
 sub is_valid_machine{
 #####################
@@ -2186,7 +2022,6 @@ sub is_valid_machine{
     my $ssh_config_all  = CJ::read_ssh_config();
     return &CJ::check_hash($ssh_config_all, [$machine]) ? 1:0;
 }
-
 
 #####################
 sub is_valid_app{
@@ -2196,8 +2031,6 @@ sub is_valid_app{
     my $lc_app = lc $app;
     return (&CJ::check_hash($app_all, [$lc_app]) and $app_all->{$lc_app}->{'version'} ne "") ? 1:0;
 }
-
-
 
 # Check the package name given is valid
 sub is_valid_pid
@@ -2214,9 +2047,6 @@ return 1;
 return 0;
 }
 }
-
-
-
 
 # Bash header based on the Batch Queueing System (BQS)
 sub bash_header{
@@ -2239,10 +2069,6 @@ die "unknown BQS"
 }
 return $HEADER;
 }
-
-
-
-
 
 ##################
 sub shell_toe{
@@ -2303,7 +2129,6 @@ HEAD
 
 }
 
-
 #####################################
 sub shell_neck{
 #####################################
@@ -2332,9 +2157,6 @@ $shell_neck =~ s|<PROGRAM>|$program| ;
 }
     return $shell_neck;
 }
-
-
-
 
 #####################################
 sub par_shell_neck{
@@ -2370,20 +2192,6 @@ if (&CJ::program_type($program) eq 'python') {
     return $shell_neck;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Check Numeric
 sub isnumeric
 {
@@ -2396,7 +2204,6 @@ return 0;
 
 }
 
-
 sub err{
     my ($message) = @_;
     die(' ' x 5 . "CJerr::$message\n");
@@ -2407,7 +2214,6 @@ sub warning{
     print(' ' x 5 . "CJwarning::$msg\n");
 }
 
-
 sub message{
     my ($msg,$noBegin) = @_;
 	if($noBegin){
@@ -2417,7 +2223,6 @@ sub message{
 	}
 }
 
-
 sub yesno{
     my ($question,$noBegin) = @_;
     my $prompt = $question . "(Y/N)?";
@@ -2425,7 +2230,6 @@ sub yesno{
     my $yesno =  <STDIN>; chomp($yesno);
     exit 0 unless (lc($yesno) eq "y" or lc($yesno) eq "yes");
 }
-
 
 sub getuserinput{
     my ($question,$default, $noConfirm) = @_;
@@ -2445,23 +2249,6 @@ sub getuserinput{
     }
     return ($user_input, $yesno);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 sub my_system
 {
@@ -2487,19 +2274,10 @@ sub my_system
 
 }
 
-
-
 sub touch
 {
     &my_system("touch $_[0]");
 }
-
-
-
-
-
-
-
 
 sub writeFile
 {
@@ -2524,7 +2302,6 @@ sub writeFile
     close $fh ;
 }
 
-
 sub readFile
 {
     my ($filepath)  = @_;
@@ -2548,15 +2325,12 @@ sub readFile
 	
 }
 
-
-
 #########################
 sub short_pid(){
 #########################
     my ($pid) = @_;
     return substr($pid,0,8);
 }
-
 
 ##########################
 sub add_to_history{
@@ -2591,16 +2365,6 @@ sub add_to_history{
     
 }
 
-
-
-
-
-
-
-
-
-
-
 sub add_to_run_history
 {
 my ($runinfo) = @_;
@@ -2619,8 +2383,6 @@ open (my $FILE , '>>', $run_history_file) or die("could not open file '$run_hist
 print $FILE "$text\n";
 close $FILE;
 }
-
-
 
 sub add_change_to_run_history
 {
@@ -2652,9 +2414,6 @@ if(lc($type) eq "clean"){
 	return $info;
 }
 
-
-
-
 sub update_record{
     my ($pid,$new_info) = @_;
     my $new_record = encode_json($new_info);
@@ -2662,7 +2421,6 @@ sub update_record{
     my $cmd="sed -i '.bak' 's|.*$pid.*|$new_record|'  $run_history_file";
     &CJ::my_system($cmd,0);
 }
-
 
 sub read_record{
     my ($pid) = @_;
@@ -2721,7 +2479,6 @@ sub read_record{
 	
 }
 
-
 sub submit_defaults {
 
     my $submit_defaults={};
@@ -2753,11 +2510,6 @@ close $FILE;
 return (\@job_ids,\@errors);
 }
 
-
-
-
-
-
 sub remove_white_space
 {
     my ($string) = @_;
@@ -2775,7 +2527,6 @@ sub remove_extension
     return ($program_name,$extension);
     
 }
-
 
 sub program_type
 {
@@ -2797,10 +2548,6 @@ sub program_type
     return $type;
 }
 
-
-
-
-
 sub reexecute_cmd{
     my ($cmd_num,$verbose) = @_;
     if (!$cmd_num){
@@ -2811,7 +2558,6 @@ sub reexecute_cmd{
     #print "$cmd\n";
     system("$cmd");
 }
-
 
 sub get_cmd{
     my ($cmd_num, $is_interactive) = @_;
@@ -2825,8 +2571,6 @@ sub get_cmd{
     $cmd =~ s/^\s+|\s+$//g;
     return $cmd;
 }
-
-
 
 sub avail_pids{
 
@@ -2845,7 +2589,6 @@ sub avail_pids{
 	return ($sorted_pids,$sorted_ts);
 }
 
-
 sub sort_hash
 {
 	my ($hash) = @_;
@@ -2861,7 +2604,6 @@ sub sort_hash
 	
 	return(\@sorted_keys, \@sorted_values);
 }
-
 
 sub add_cmd{
     my ($cmdline) = @_;
@@ -2937,8 +2679,6 @@ sub create_run_history_file{
 &CJ::touch($run_history_file) unless ( -f $run_history_file);
 }
 
-
-
 sub create_ssh_config_md5{
     
     &CJ::touch($ssh_config_md5) unless ( -f $ssh_config_md5);
@@ -2948,8 +2688,6 @@ sub create_ssh_config_md5{
        ssh_config_md5('update')
     }
 }
-
-
 
 sub ssh_config_md5{
     my ($mode) = @_;
@@ -2979,9 +2717,6 @@ sub ssh_config_md5{
     
 }
 
-
-
-
 sub install_software{
 
     my ($app, $machine, $force_tag, $q_yesno) = @_;
@@ -3008,11 +2743,6 @@ sub install_software{
 
 }
 
-
-
-
-
-
 sub CodeObj{
     
 my ($path,$program,$dep_folder) = @_;
@@ -3033,10 +2763,6 @@ if($program_type eq 'matlab'){
     return $code;
 }
 
-
-
-
-
 sub getExtension{
     my ($filename) = @_;
     #print "$filename\n";
@@ -3044,7 +2770,6 @@ sub getExtension{
     my ($ext) = $filename =~ /\.([^.]+)$/;
     return $ext;
 }
-
 
 sub connect2cluster{
     my ($machine, $verbose) = @_;
@@ -3067,20 +2792,6 @@ sub connect_and_cd{
     system("$cmd");
     return 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 sub avail{
     my ($tag) = @_;
@@ -3137,8 +2848,6 @@ sub avail{
     exit 0;
 }
 
-
-
 sub max {
     my (@vars) = @_;
     
@@ -3150,21 +2859,6 @@ sub max {
     
     return $max;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ############# change kb to human readable
 sub formatFileSize {
@@ -3179,30 +2873,10 @@ sub formatFileSize {
     return wantarray ? ($size, $units->[$exp]) : sprintf("%.2f %s", $size, $units->[$exp]);
 }
 
-
 sub getFileSize {
     my $file=shift;
     my $size = -s "$file";
     return $size;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 1;
